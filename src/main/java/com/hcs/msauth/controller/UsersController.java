@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UsersController {
     @Autowired
     private UsersServices services;
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<Page<UsersDTO>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -26,21 +27,25 @@ public class UsersController {
         Page<UsersDTO> list = services.findAllPaged(pageRequest);
         return ResponseEntity.ok().body(list);
     }
+    @CrossOrigin
     @GetMapping(value = "/{id}")
     public ResponseEntity<UsersDTO> findByID(@PathVariable String id) {
         UsersDTO dto = services.findByID(id);
         return ResponseEntity.ok(dto);
     }
+    @CrossOrigin
     @GetMapping(value = "/perfil")
     public ResponseEntity<UsersDTO> perfil() {
         UsersDTO dto = services.perfil();
         return ResponseEntity.ok(dto);
     }
+    @CrossOrigin
     @PutMapping(value = "/{id}")
     public ResponseEntity<UsersDTO> updateUser(@PathVariable String id, @RequestBody UsersDTO dto) {
         dto = services.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }
+    @CrossOrigin
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         services.delete(id);

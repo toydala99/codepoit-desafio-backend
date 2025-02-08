@@ -27,6 +27,7 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                                .requestMatchers(HttpMethod.GET, "/").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/swagger-ui.html").permitAll()
@@ -37,7 +38,7 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.DELETE, "/ods").authenticated()
 
                         // .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
-                        //.anyRequest().authenticated()
+                        //.anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

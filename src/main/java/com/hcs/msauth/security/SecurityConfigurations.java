@@ -1,5 +1,6 @@
 package com.hcs.msauth.security;
 
+import com.hcs.msauth.configs.CustomCorsConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -13,16 +14,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Controller
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-   @Autowired
+    @Autowired
     SecurityFilter securityFilter;
-
+    @Autowired
+    CorsConfigurationSource CustomCorsConfiguration;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
         return  httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -41,6 +45,7 @@ public class SecurityConfigurations {
                         //.anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors( c -> c.configurationSource(CustomCorsConfiguration))
                 .build();
     }
 
